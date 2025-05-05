@@ -14,6 +14,4 @@ public interface UserDAO {
 
     void deleteUserById(int id);
 
-    void createUsersTable();
-
 }

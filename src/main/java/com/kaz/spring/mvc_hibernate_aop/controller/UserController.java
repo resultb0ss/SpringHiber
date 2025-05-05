@@ -20,7 +20,6 @@ public class UserController {
     @RequestMapping("/")
     public String showAllUsers(Model model) {
 
-        userService.createUsersTable();
         List<User> users = userService.getAllUsers();
         model.addAttribute("allUsers", users);
 

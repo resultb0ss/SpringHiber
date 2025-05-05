@@ -11,24 +11,10 @@ import java.util.List;
 @Repository
 public class UserDAOImpl implements UserDAO {
 
-    private static final String CREATE_USERS_TABLE_SQL = """
-            CREATE TABLE IF NOT EXISTS users(
-                id int NOT NULL AUTO_INCREMENT,
-                name varchar(25),
-                surname varchar(25),
-                department varchar(25),
-                salary int,
-                PRIMARY KEY (id)
-            );
-            """;
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Override
-    public void createUsersTable() {
-        entityManager.createNativeQuery(CREATE_USERS_TABLE_SQL).executeUpdate();
-    }
 
     @Override
     public List<User> getAllUsers() {

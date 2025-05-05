@@ -38,9 +38,4 @@ public class UserServiceImpl implements UserService {
         userDAO.deleteUserById(id);
     }
 
-    @Override
-    @Transactional
-    public void createUsersTable() {
-        userDAO.createUsersTable();
-    }
 }

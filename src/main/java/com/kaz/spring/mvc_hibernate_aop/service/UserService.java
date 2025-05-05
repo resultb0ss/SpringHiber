@@ -14,6 +14,5 @@ public interface UserService {
 
     void deleteUserById(int id);
 
-    void createUsersTable();
 
 }
