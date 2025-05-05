@@ -1,10 +1,8 @@
 package com.kaz.spring.mvc_hibernate_aop.config;
 
-import com.kaz.spring.mvc_hibernate_aop.util.PropertiesUtil;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.*;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -24,9 +22,12 @@ import java.util.Properties;
 @EnableWebMvc
 @EnableTransactionManagement
 @EnableAspectJAutoProxy
+@PropertySource("classpath:db.properties")
 @ComponentScan("com.kaz.spring.mvc_hibernate_aop")
 public class AppConfig implements WebMvcConfigurer {
 
+    @Autowired
+    private Environment environment;
 
     @Bean
     public InternalResourceViewResolver viewResolver() {
@@ -40,10 +41,10 @@ public class AppConfig implements WebMvcConfigurer {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(PropertiesUtil.get("db.driver"));
-        dataSource.setUrl(PropertiesUtil.get("db.url"));
-        dataSource.setUsername(PropertiesUtil.get("db.username"));
-        dataSource.setPassword(PropertiesUtil.get("db.password"));
+        dataSource.setDriverClassName(environment.getProperty("db.driver"));
+        dataSource.setUrl(environment.getProperty("db.url"));
+        dataSource.setUsername(environment.getProperty("db.username"));
+        dataSource.setPassword(environment.getProperty("db.password"));
         return dataSource;
     }
 
@@ -69,9 +70,9 @@ public class AppConfig implements WebMvcConfigurer {
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", PropertiesUtil.get("hibernate.dialect"));
-        properties.setProperty("hibernate.show_sql", PropertiesUtil.get("hibernate.show_sql"));
-        properties.setProperty("hibernate.hbm2ddl.auto", PropertiesUtil.get("hibernate.hbm2ddl.auto"));
+        properties.setProperty("hibernate.dialect", environment.getProperty("hibernate.dialect"));
+        properties.setProperty("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
+        properties.setProperty("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
         return properties;
     }
 }
