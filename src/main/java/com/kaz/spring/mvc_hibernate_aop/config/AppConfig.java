@@ -1,5 +1,6 @@
 package com.kaz.spring.mvc_hibernate_aop.config;
 
+import com.kaz.spring.mvc_hibernate_aop.util.PropertiesUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -39,10 +40,10 @@ public class AppConfig implements WebMvcConfigurer {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3307/MYSQL");
-        dataSource.setUsername("root");
-        dataSource.setPassword("root");
+        dataSource.setDriverClassName(PropertiesUtil.get("db.driver"));
+        dataSource.setUrl(PropertiesUtil.get("db.url"));
+        dataSource.setUsername(PropertiesUtil.get("db.username"));
+        dataSource.setPassword(PropertiesUtil.get("db.password"));
         return dataSource;
     }
 
@@ -52,7 +53,6 @@ public class AppConfig implements WebMvcConfigurer {
         LocalContainerEntityManagerFactoryBean entitityContainer = new LocalContainerEntityManagerFactoryBean();
         entitityContainer.setDataSource(dataSource());
         entitityContainer.setPackagesToScan("com.kaz.spring.mvc_hibernate_aop.entity");
-
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         entitityContainer.setJpaVendorAdapter(vendorAdapter);
         entitityContainer.setJpaProperties(hibernateProperties());
@@ -69,9 +69,9 @@ public class AppConfig implements WebMvcConfigurer {
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
-        properties.setProperty("hibernate.show_sql", "true");
-        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+        properties.setProperty("hibernate.dialect", PropertiesUtil.get("hibernate.dialect"));
+        properties.setProperty("hibernate.show_sql", PropertiesUtil.get("hibernate.show_sql"));
+        properties.setProperty("hibernate.hbm2ddl.auto", PropertiesUtil.get("hibernate.hbm2ddl.auto"));
         return properties;
     }
 }

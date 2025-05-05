@@ -18,7 +18,6 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> getAllUsers() {
-
         TypedQuery<User> query = entityManager.createQuery("from User", User.class);
         return query.getResultList();
     }
@@ -30,7 +29,6 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User getUserById(int id) {
-
         User user = entityManager.find(User.class, id);
         return user;
     }

@@ -19,33 +19,26 @@ public class UserController {
 
     @RequestMapping("/")
     public String showAllUsers(Model model) {
-
         List<User> users = userService.getAllUsers();
         model.addAttribute("allUsers", users);
-
         return "all-users";
     }
 
     @RequestMapping("/addNewUser")
     public String addNewUser(Model model) {
-
         User user = new User();
         model.addAttribute("user", user);
-
         return "user-info";
     }
 
     @RequestMapping("/saveNewUser")
     public String saveNewUser(@ModelAttribute("user") User user) {
-
         userService.saveNewUser(user);
-
         return "redirect:/";
     }
 
     @RequestMapping("/updateInfo")
     public String updateUser(@RequestParam("usrId") int id, Model model) {
-
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
         return "user-info";
@@ -53,7 +46,6 @@ public class UserController {
 
     @RequestMapping("/deleteUser")
     public String deleteUser(@RequestParam("usrId") int id) {
-
         userService.deleteUserById(id);
         return "redirect:/";
     }
