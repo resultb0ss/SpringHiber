@@ -1,9 +1,10 @@
 package com.kaz.spring.mvc_hibernate_aop.config;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -16,12 +17,12 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import java.beans.PropertyVetoException;
 import java.util.Properties;
 
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
+@EnableAspectJAutoProxy
 @ComponentScan("com.kaz.spring.mvc_hibernate_aop")
 public class AppConfig implements WebMvcConfigurer {
 
@@ -37,14 +38,10 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Bean
     public DataSource dataSource() {
-        ComboPooledDataSource dataSource = new ComboPooledDataSource();
-        try {
-            dataSource.setDriverClass("com.mysql.cj.jdbc.Driver");
-        } catch (PropertyVetoException e) {
-            throw new RuntimeException(e);
-        }
-        dataSource.setJdbcUrl("jdbc:mysql://localhost:3307/MYSQL?useSSL=false&serverTimezone=UTC");
-        dataSource.setUser("root");
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3307/MYSQL?useSSL=false&serverTimezone=UTC");
+        dataSource.setUsername("root");
         dataSource.setPassword("root");
         return dataSource;
     }
@@ -74,7 +71,7 @@ public class AppConfig implements WebMvcConfigurer {
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         properties.setProperty("hibernate.show_sql", "true");
-        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
         return properties;
     }
 }
